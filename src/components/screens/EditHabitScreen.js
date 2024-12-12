@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import { View, Text, TextInput, StyleSheet, TouchableOpacity, Alert } from "react-native";
-import { db } from "../config/firebaseConfig";
+import { db } from "../../config/firebaseConfig";
 import { doc, updateDoc, deleteDoc } from "firebase/firestore";
-import StartDatePopup from "../components/popups/StartDatePopup";
-import EndDatePopup from "../components/popups/EndDatePopup";
-import RepeatPopup from "../components/popups/RepeatPopup";
-import AlarmPopup from "../components/popups/AlarmPopup";
+import StartDatePopup from "../../components/popups/StartDatePopup";
+import EndDatePopup from "../../components/popups/EndDatePopup";
+import RepeatPopup from "../../components/popups/RepeatPopup";
+import AlarmPopup from "../../components/popups/AlarmPopup";
 
 const EditHabitScreen = ({ route, navigation }) => {
   const { habit } = route.params;
@@ -135,7 +135,7 @@ const EditHabitScreen = ({ route, navigation }) => {
 
 const styles = StyleSheet.create({
   container: { flex: 1, padding: 16, backgroundColor: "#F7F8FC" },
-  title: { fontSize: 24, fontWeight: "bold", marginBottom: 16 },
+  title: { fontSize: 24, fontWeight: "bold", marginBottom: 16, marginTop: 40, },
   input: { borderBottomWidth: 1, borderBottomColor: "#ccc", marginBottom: 16 },
   option: {
     padding: 16,

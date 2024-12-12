@@ -1,17 +1,17 @@
 import React, { useState } from "react";
 import { View, Text, TextInput, StyleSheet, TouchableOpacity } from "react-native";
-import { db } from "../config/firebaseConfig";
+import { db } from "../../config/firebaseConfig";
 import { collection, addDoc } from "firebase/firestore";
-import StartDatePopup from "../components/popups/StartDatePopup";
-import EndDatePopup from "../components/popups/EndDatePopup";
-import RepeatPopup from "../components/popups/RepeatPopup";
-import AlarmPopup from "../components/popups/AlarmPopup";
+import StartDatePopup from "../../components/popups/StartDatePopup";
+import EndDatePopup from "../../components/popups/EndDatePopup";
+import RepeatPopup from "../../components/popups/RepeatPopup";
+import AlarmPopup from "../../components/popups/AlarmPopup";
 
 const AddHabitScreen = ({ navigation }) => {
   const [habitName, setHabitName] = useState("");
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
-  const [repeat, setRepeat] = useState("");
+  const [repeat, setRepeat] = useState([]); // 기본값을 빈 배열로 설정
   const [alarm, setAlarm] = useState("");
   const [showStartDatePopup, setShowStartDatePopup] = useState(false);
   const [showEndDatePopup, setShowEndDatePopup] = useState(false);
@@ -24,14 +24,14 @@ const AddHabitScreen = ({ navigation }) => {
         name: habitName,
         startDate,
         endDate,
-        repeat,
+        repeat: Array.isArray(repeat) ? repeat : repeat.split(",").map(day => day.trim()),
         alarm,
       });
-      navigation.goBack();
+      navigation.navigate("TodayHabitScreen", { refresh: true });
     } catch (error) {
       console.error("Error adding habit: ", error);
     }
-  };
+  };  
 
   return (
     <View style={styles.container}>
@@ -63,7 +63,7 @@ const AddHabitScreen = ({ navigation }) => {
         onPress={() => setShowRepeatPopup(true)}
       >
         <Text style={styles.optionText}>
-          반복: {repeat || "없음"}
+          반복: {Array.isArray(repeat) && repeat.length > 0 ? `매주: ${repeat.join(" ")}` : "없음"}
         </Text>
       </TouchableOpacity>
       <TouchableOpacity
@@ -112,7 +112,7 @@ const AddHabitScreen = ({ navigation }) => {
 
 const styles = StyleSheet.create({
   container: { flex: 1, padding: 16, backgroundColor: "#F7F8FC" },
-  title: { fontSize: 24, fontWeight: "bold", marginBottom: 16 },
+  title: { fontSize: 24, fontWeight: "bold", marginBottom: 16, marginTop: 40,},
   input: { borderBottomWidth: 1, borderBottomColor: "#ccc", marginBottom: 16 },
   option: {
     padding: 16,

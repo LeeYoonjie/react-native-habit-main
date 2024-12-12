@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity, Modal } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
 
 const RepeatPopup = ({ onClose, onRepeatSelect }) => {
   const [repeatType, setRepeatType] = useState("매일");
@@ -47,48 +48,106 @@ const RepeatPopup = ({ onClose, onRepeatSelect }) => {
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>반복</Text>
-      <TouchableOpacity onPress={() => setRepeatType("매일")}>
-        <Text style={repeatType === "매일" ? styles.selectedText : styles.text}>
-          매일
-        </Text>
-      </TouchableOpacity>
-      <TouchableOpacity onPress={() => setRepeatType("매주")}>
-        <Text style={repeatType === "매주" ? styles.selectedText : styles.text}>
-          매주
-        </Text>
-      </TouchableOpacity>
-      <TouchableOpacity onPress={() => setRepeatType("매월")}>
-        <Text style={repeatType === "매월" ? styles.selectedText : styles.text}>
-          매월
-        </Text>
-      </TouchableOpacity>
-      <View style={styles.optionsContainer}>
-        {repeatType === "매주" && renderWeeklyButtons()}
-        {repeatType === "매월" && renderMonthlyButtons()}
+    <Modal transparent={true} animationType="slide">
+      <View style={styles.overlay}>
+        <View style={styles.popup}>
+          {/* 상단 헤더 */}
+          <View style={styles.header}>
+            <TouchableOpacity onPress={onClose}>
+              <Ionicons name="chevron-back" size={24} color="black" />
+            </TouchableOpacity>
+            <Text style={styles.title}>반복</Text>
+          </View>
+          {/* 옵션 버튼 */}
+          <View style={styles.repeatOptions}>
+            <TouchableOpacity onPress={() => setRepeatType("매일")}>
+              <Text
+                style={
+                  repeatType === "매일" ? styles.selectedText : styles.text
+                }
+              >
+                매일
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => setRepeatType("매주")}>
+              <Text
+                style={
+                  repeatType === "매주" ? styles.selectedText : styles.text
+                }
+              >
+                매주
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => setRepeatType("매월")}>
+              <Text
+                style={
+                  repeatType === "매월" ? styles.selectedText : styles.text
+                }
+              >
+                매월
+              </Text>
+            </TouchableOpacity>
+          </View>
+          {/* 옵션 렌더링 */}
+          <View style={styles.optionsContainer}>
+            {repeatType === "매주" && renderWeeklyButtons()}
+            {repeatType === "매월" && renderMonthlyButtons()}
+          </View>
+          {/* 완료 버튼 */}
+          <TouchableOpacity
+            style={styles.doneButton}
+            onPress={() => {
+              onRepeatSelect(
+                repeatType,
+                repeatType === "매주" ? selectedDays : selectedDates
+              );
+              onClose();
+            }}
+          >
+            <Text style={styles.doneText}>완료</Text>
+          </TouchableOpacity>
+        </View>
       </View>
-      <TouchableOpacity
-        style={styles.button}
-        onPress={() => {
-          onRepeatSelect(repeatType, repeatType === "매주" ? selectedDays : selectedDates);
-          onClose();
-        }}
-      >
-        <Text style={styles.buttonText}>완료</Text>
-      </TouchableOpacity>
-      <TouchableOpacity style={styles.backButton} onPress={onClose}>
-        <Text style={styles.backText}>뒤로</Text>
-      </TouchableOpacity>
-    </View>
+    </Modal>
   );
 };
 
 const styles = StyleSheet.create({
-  container: { flex: 1, padding: 16, backgroundColor: "white" },
-  title: { fontSize: 20, fontWeight: "bold", marginBottom: 16 },
-  text: { fontSize: 16, marginVertical: 8 },
-  selectedText: { fontSize: 16, marginVertical: 8, fontWeight: "bold", color: "blue" },
+  overlay: {
+    flex: 1,
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  popup: {
+    width: "90%",
+    backgroundColor: "white",
+    borderRadius: 16,
+    padding: 16,
+    alignItems: "center",
+    elevation: 5,
+  },
+  header: {
+    flexDirection: "row",
+    alignItems: "center",
+    width: "100%",
+    marginBottom: 16,
+  },
+  title: {
+    flex: 1,
+    fontSize: 20,
+    fontWeight: "bold",
+    textAlign: "center",
+    marginRight: 24, // 제목과 < 아이콘 간 간격 확보
+  },
+  repeatOptions: {
+    flexDirection: "row",
+    justifyContent: "space-around",
+    width: "100%",
+    marginBottom: 16,
+  },
+  text: { fontSize: 16, color: "black" },
+  selectedText: { fontSize: 16, fontWeight: "bold", color: "blue" },
   optionsContainer: { flexDirection: "row", flexWrap: "wrap", marginTop: 16 },
   dayButton: {
     padding: 8,
@@ -100,15 +159,15 @@ const styles = StyleSheet.create({
   },
   selectedButton: { backgroundColor: "#DCDFFF" },
   dayText: { fontSize: 14 },
-  button: {
+  doneButton: {
     backgroundColor: "#DCDFFF",
     padding: 16,
     borderRadius: 8,
     marginTop: 16,
+    width: "100%",
+    alignItems: "center",
   },
-  buttonText: { textAlign: "center", fontWeight: "bold" },
-  backButton: { marginTop: 16, alignItems: "center" },
-  backText: { color: "gray" },
+  doneText: { fontWeight: "bold", color: "black" },
 });
 
 export default RepeatPopup;
