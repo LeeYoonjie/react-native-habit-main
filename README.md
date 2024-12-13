@@ -1,4 +1,4 @@
-# 해빗 (Habit + Have it)
+##해빗 (Habit + Have it)
 
 ![Habit Tracker Banner](https://github.com/user-attachments/assets/df2fcad6-3d7d-45c8-a439-8b3c8bc173c8)
 
