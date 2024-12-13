@@ -1,4 +1,4 @@
-package com.ilusixn.habit
+package com.yoonjie.habit
 
 import android.app.Application
 import android.content.res.Configuration

@@ -13,14 +13,16 @@
       "backgroundColor": "#ffffff"
     },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.yoonjie.habit"
     },
     "android": {
       "userInterfaceStyle": "automatic",
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.yoonjie.habit"
     },
     "web": {
       "favicon": "./assets/favicon.png"
@@ -29,6 +31,9 @@
       "eas": {
         "projectId": "ebc4e2b5-666d-4e55-84ac-df18c688214e"
       }
-    }
+    },
+    "plugins": [
+      "expo-asset"
+    ]
   }
 }

@@ -1,4 +1,4 @@
-package com.ilusixn.habit
+package com.yoonjie.habit
 import expo.modules.splashscreen.SplashScreenManager
 
 import android.os.Build
